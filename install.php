@@ -38,7 +38,7 @@
       $sql .= "`$data`" . ($MYSQL_DATA_TYPE[$data_type["type"]]) . (isset($data_type["length"]) ? "(".$data_type["length"].")" : "") . " NOT NULL, ";
     }
     $sql .= " `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-      `update_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP )
+      `update_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP )
       ENGINE = InnoDB AUTO_INCREMENT = 1;";
     if($link->query($sql) === TRUE) {
       echo("<li>Table <b>$model_name</b> created successfully" . '</li>');
@@ -58,7 +58,7 @@
     `password` VARCHAR(60) NOT NULL, 
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     `token` VARCHAR(32), 
-    `token_expiring_date` DATETIME DEFAULT CURRENT_TIMESTAMP
+    `token_expiring_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ENGINE = InnoDB AUTO_INCREMENT = 1;";
   if($link->query($sql) === TRUE) {
