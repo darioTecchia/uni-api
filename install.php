@@ -9,7 +9,7 @@
 
   $link = mysqli_connect($host, $user, $pass);
 
-  $models = file_get_contents('core/models.json');
+  $models = file_get_contents('models.json');
   $encoded_models = json_decode($models, true);
 
   if(!$link) {
@@ -32,6 +32,7 @@
 
   // create TABLES
   foreach ($encoded_models['models'] as $model_name => $value) {
+    echo("Creating $model_name ...");
     $sql .= " CREATE TABLE IF NOT EXISTS `$dbname`.`$model_name` ( ";
     foreach($value as $data => $data_type) {
       $sql .= "`$data`" . ($MYSQL_DATA_TYPE[$data_type["type"]]) . (isset($data_type["length"]) ? "(".$data_type["length"].")" : "") . " NOT NULL, ";
