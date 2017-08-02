@@ -9,8 +9,6 @@
 
   $link = mysqli_connect($host, $user, $pass);
 
-  var_dump($link);
-
   $models = file_get_contents('core/models.json');
   $encoded_models = json_decode($models, true);
 
