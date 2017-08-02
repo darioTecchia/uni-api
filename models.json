@@ -1,0 +1,43 @@
+{
+  "models": {
+    "beers": {
+      "name": {
+        "type": "String",
+        "length": 32
+      },
+      "abv": {
+        "type": "String",
+        "length": 32
+      }
+    },
+    "events": {
+      "name": {
+        "type": "String",
+        "length": 32
+      },
+      "start_date": {
+        "type": "Datetime"
+      }
+    },
+    "producers": {
+      "name": {
+        "type": "String",
+        "length": 32
+      },
+      "nationality": {
+        "type": "String",
+        "length": 32
+      }
+    }
+  },
+  "relations": {
+    "beers": {
+      "hasOne": ["producers"],
+      "hasMany": []
+    },
+    "events": {
+      "hasOne": [],
+      "hasMany": ["beers"]
+    }
+  }
+}
