@@ -123,10 +123,10 @@
   // create TRIGGERS (MAYBE ARE NOT NECESSARY)
 
   // create MAIN USER
-  $sql = "INSERT INTO `test`.`user` (`username`, `password`)
+  $sql = "INSERT INTO `$dbname`.`user` (`username`, `password`)
           SELECT * FROM (SELECT 'admin', '" . password_hash("admin", PASSWORD_BCRYPT) . "') AS tmp
           WHERE NOT EXISTS (
-            SELECT username FROM `test`.`user` WHERE `username` = 'admin'
+            SELECT username FROM `$dbname`.`user` WHERE `username` = 'admin'
           ) LIMIT 1;";
 
   if($link->query($sql) === TRUE) {
