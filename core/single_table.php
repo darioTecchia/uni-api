@@ -1,8 +1,9 @@
 <?php
   // retrieve the table and key from the path
   $table = preg_replace('/[^a-z0-9_]+/i', '', $request[1]);
+  header('Content-Type: application/json');
   if($table == "") {
-    echo(json_encode(array('error' => 'Invalid Endpoint')));
+    echo(json_encode(array('error' => 'Invalid Endpoint!')));
     http_response_code(501);
     return;
   }
@@ -23,11 +24,11 @@
   // build the SET part of the SQL command
   $set = '';
   for ($i=0; $i<count($columns); $i++) {
+    if($columns[$i] == "id") continue;
     $set .= ($i>0?',':'').'`'.$columns[$i].'`=';
     $set .= ($values[$i] === null ? 'NULL':'"'.$values[$i].'"');
   }
   
-  header('Content-Type: application/json');
 
   // create SQL based on HTTP method
   switch ($table) {
@@ -40,12 +41,6 @@
           . " FROM user"
           . " WHERE `username` = '".$input["username"]."'"
         );
-
-        // mysqli_query($link, 
-        //   "UPDATE `$table`
-        //   SET `token` = '".md5($input["username"].":".$input["password"].time()).
-        //   "' WHERE `username` = '".$input["username"]."'"
-        // );
 
         $sql = "SELECT username, id, token
                 FROM `$table`
@@ -107,14 +102,6 @@
   // excecute SQL statement
   $result = mysqli_query($link, $sql);
 
-  // ERRORE
-
-  // die if SQL statement failed
-  if (!$result) {
-    echo(json_encode(array('error' => 'SQL statement failed')));
-    return;
-  }
-
   // print results, insert id or affected row count
   switch ($table) {
     case 'user':
@@ -145,52 +132,60 @@
       break;
     
     default:
-      switch ($method) {
-        case 'GET':
-          if(mysqli_affected_rows($link) == 0) {
-            if($key == null) {
-              echo '[]';
-              http_response_code(200);
+      if (!$result) {
+        error_response(501, 'Invalid Endpoint! No table founded with this name: '.$table);
+        return;
+      } else {
+        switch ($method) {
+          case 'GET':
+            if(mysqli_affected_rows($link) == 0) {
+              if($key == null) {
+                echo '[]';
+                http_response_code(200);
+              }
+              else {
+                error_response(404, 'No element founded with this ID: '.$key);
+              }
+            }
+            elseif(mysqli_affected_rows($link) == 1 && $key) {
+              echo(json_encode(mysqli_fetch_object($result), 128));
             }
             else {
-              error_response(404, 'No element founded with this ID: '.$key);
+              if (!$key) echo '[';
+              for ($i = 0; $i < mysqli_num_rows($result); $i++) {
+                echo ($i > 0 ? ',' : '').json_encode(mysqli_fetch_object($result));
+              }
+              if (!$key) echo ']';
             }
-          }
-          elseif(mysqli_affected_rows($link) == 1 && $key) {
-            echo(json_encode(mysqli_fetch_object($result), 128));
-          }
-          else {
-            if (!$key) echo '[';
-            for ($i = 0; $i < mysqli_num_rows($result); $i++) {
-              echo ($i > 0 ? ',' : '').json_encode(mysqli_fetch_object($result));
-            }
-            if (!$key) echo ']';
-          }
-          break;
+            break;
 
-        case 'PUT':
-          // echo mysqli_insert_id($link);
-          $last_row = mysqli_query(
-            $link,
-            "SELECT * FROM `$table`"
-            . "ORDER BY `update_date` DESC\n"
-            . "LIMIT 1"
-          );
-          echo(json_encode(mysqli_fetch_object($last_row)));
-          break;
-        
-        case 'POST':
-          // echo mysqli_insert_id($link);
-          $last_row = mysqli_query(
-            $link,
-            "SELECT * FROM `$table`"
-            . "WHERE `id` = `" . mysqli_insert_id($link) . "`\n"
-          );
-          echo(json_encode(mysqli_fetch_object($last_row)));
-          break;
-        default:
-          echo(json_encode(array('count' => mysqli_affected_rows($link))));
-          break;
+          case 'PUT':
+            $last_row = mysqli_query(
+              $link,
+              "SELECT * FROM `$table`"
+              . "WHERE `id` = ". $key . "\n"
+            );
+            $res = mysqli_fetch_object($last_row);
+            if(!$res) {
+              error_response(404, 'No element founded with this ID: '.$key);
+            } else {
+              echo(json_encode($res));
+            }
+            break;
+          
+          case 'POST':
+            // echo mysqli_insert_id($link);
+            $last_row = mysqli_query(
+              $link,
+              "SELECT * FROM `$table`"
+              . "WHERE `id` = " . mysqli_insert_id($link) . "\n"
+            );
+            echo(json_encode(mysqli_fetch_object($last_row)));
+            break;
+          default:
+            echo(json_encode(array('count' => mysqli_affected_rows($link))));
+            break;
+        }
       }
       break;
   }

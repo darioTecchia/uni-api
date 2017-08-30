@@ -2,9 +2,9 @@
   // retrieve the table and key from the path
   $main_table = preg_replace('/[^a-z0-9_]+/i', '', $request[1]);
   $related_table = preg_replace('/[^a-z0-9_]+/i', '', $request[3]);
+  header('Content-Type: application/json');
   if($main_table == "") {
-    echo(json_encode(array('error' => 'Invalid Endpoint')));
-    http_response_code(501);
+    error_response(501, 'Invalid endpoint!');
     return;
   }
 
@@ -23,6 +23,7 @@
     }
     return mysqli_real_escape_string($link, (string)$value);
   }, array_values($input));
+  $req = array_combine($columns, $values);
   
   // build the SET part of the SQL command
   $set = '';
@@ -31,8 +32,6 @@
     $set .= ($values[$i] === null ? 'NULL':'"'.$values[$i].'"');
   }
   
-  header('Content-Type: application/json');
-
   // create SQL based on HTTP method
     
   switch ($method) {
@@ -40,11 +39,13 @@
       $sql = "SELECT `$related_table`.*
               FROM `$related_table`
               LEFT JOIN `$main_table"."_"."$related_table` ON `$related_table`.`id` = `$main_table"."_"."$related_table`.`$related_table"."_id`"." 
-              LEFT JOIN `$main_table` ON `$main_table"."_"."$related_table`.`events_id` = `$main_table`".".`id`
+              LEFT JOIN `$main_table` ON `$main_table"."_"."$related_table`.`$main_table"."_id`" ." = `$main_table`".".`id`
               WHERE `$main_table`.id = $key";
       break;
 
-
+    case 'POST':
+      $sql = "INSERT INTO `$main_table"."_"."$related_table` (`$main_table"."_id`" . ", `$related_table"."_id`" . ") VALUES ($key, " . $req["id"] . ")";
+      break;
 
     case 'DELETE':
       if(check_token()) {
@@ -66,7 +67,7 @@
 
   // die if SQL statement failed
   if (!$result) {
-    echo(json_encode(array('error' => 'SQL statement failed')));
+    error_response(501, 'Invalid Endpoint! No table founded with this name: '.$table);
     return;
   }
 
@@ -93,6 +94,11 @@
         echo ']';
       }
       break;
+    
+    case 'POST':
+      echo(json_encode(array('count' => mysqli_affected_rows($link))));
+      break;
+
     default:
       echo(json_encode(array('count' => mysqli_affected_rows($link))));
       break;

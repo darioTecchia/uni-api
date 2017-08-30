@@ -24,7 +24,7 @@
   function error_response($status_code, $message) {
     echo(json_encode(array('error' => $message)));
     http_response_code($status_code);
-    return;
+    exit();
   }
 
   /**

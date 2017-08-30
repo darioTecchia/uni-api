@@ -14,8 +14,8 @@ It have an authentication module.
 - [Usage](#usage-&-api)
 	- [user](#user)
 	- [other tables](#other-tables)
-        - [no relations](#no-relations)
-        - [relations](#relations)
+        - [no relations](#hasOne)
+        - [relations](#hasMany)
 
 # Install
 
@@ -36,6 +36,7 @@ The usage is realy simple:
 
 > **POST** ```/user``` <br>
 Logs user into the system <br>
+
 request: 
 ```json
 { 
@@ -52,10 +53,10 @@ response:
 }
 ```
 
---
 
 > **PATCH** ```/user/:id``` <br>
 Update user <br>
+
 request: (you can send just username, password or both)
 ```json
 { 
@@ -76,6 +77,7 @@ response:
 
 > **GET** ```/table``` <br>
 Get all the rows <br>
+
 response:
 ```
 [
@@ -88,10 +90,11 @@ response:
 ]
 ```
 
---
+
 
 > **GET** ```/table/:id``` <br>
 Find row by ID <br>
+
 response:
 ```
 { 
@@ -99,11 +102,12 @@ response:
 }
 ```
 
---
+
 
 > **PUT** ```/table/:id``` <br>
 Update a row in the database <br>
 **Need to send the access_token in the Authorization header** <br>
+
 request: 
 ```
 { 
@@ -117,21 +121,34 @@ response:
 }
 ```
 
---
+
 
 > **POST** ```/table``` <br>
 Create a new row <br>
 **Need to send the access_token in the Authorization header** <br>
+
 request: 
 ```
 { 
-    //table's field without id and date_added
+    //table's field without id and update_date
 }
 ```
 response:
 ```json
 { 
     //added row
+}
+```
+
+
+> **DELETE** ```/table/:id``` <br>
+Create a new row <br>
+**Need to send the access_token in the Authorization header** <br>
+
+response:
+```json
+{ 
+    //numbers of deleted row
 }
 ```
 
@@ -140,28 +157,70 @@ response:
 #### hasOne
 
 > **GET** ```/table/:id/relatedTable``` <br>
-Get the element related to the table <br>
-response:
-```
-  { 
-    //all related table's fields
-  }
-```
+Delete <br>
 
---
+- Make a **GET** request to the table;
+- Get the relatedTable_id from the body;
+- Make a **GET** request to the relatedTeble with the obtained id.
+
+> **PUT** ```/table/:id/relatedTable``` <br>
+Create a new relation <br>
+**Need to send the access_token in the Authorization header** <br>
+
+- Just update the relatedTable_id field with the related element's id.
 
 > **DELETE** ```/table/:id/relatedTable``` <br>
 Create a new row <br>
 **Need to send the access_token in the Authorization header** <br>
+
+- Just set to **NULL** the relatedTable_id field
+
+#### hasMany
+
+> **GET** ```/table/:id/relatedTable``` <br>
+Get the realted elements of a determinate table <br>
+**Need to send the access_token in the Authorization header** <br>
+
+response:
+```
+{ 
+    [
+      { 
+        //row_one
+      },
+      { 
+        //row_two
+      }
+    ]
+}
+```
+
+
+> **POST** ```/table/:id/relatedTable``` <br>
+Relate an existent element to the table <br>
+**Need to send the access_token in the Authorization header** <br>
+
 request: 
 ```
 { 
-    //table's field without id and date_added
+ 	// an existent element to relate
 }
 ```
 response:
 ```json
 { 
     //added row
+}
+```
+
+
+> **DELETE** ```/table/:id/relatedTable/:relatedId``` <br>
+Delete a relation between two elements <br>
+**Need to send the access_token in the Authorization header** <br>
+
+response:
+```json
+{ 
+    //numbers of deleted row
 }
 ```
