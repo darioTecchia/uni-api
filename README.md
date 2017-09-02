@@ -19,7 +19,7 @@ It have an authentication module.
 
 # Install
 
-Save the file *api.php* in your server document root and configure the `config.php` file.
+Save the file *api.php* and */core* folder in your server document root and configure the `config.php` file.
 
 Once you have configured the `config.php` file with the right parameters, launch `install.php`.
 
@@ -34,7 +34,7 @@ The usage is realy simple:
 
 ### Basic API
 
-> **POST** ```/user``` <br>
+> **POST** api.php```/user``` <br>
 Logs user into the system <br>
 
 request: 
@@ -54,7 +54,7 @@ response:
 ```
 
 
-> **PATCH** ```/user/:id``` <br>
+> **PATCH** api.php```/user/:id``` <br>
 Update user <br>
 
 request: (you can send just username, password or both)
@@ -75,7 +75,7 @@ response:
 
 ### no relations
 
-> **GET** ```/table``` <br>
+> **GET** api.php```/table``` <br>
 Get all the rows <br>
 
 response:
@@ -92,7 +92,7 @@ response:
 
 
 
-> **GET** ```/table/:id``` <br>
+> **GET** api.php```/table/:id``` <br>
 Find row by ID <br>
 
 response:
@@ -104,7 +104,7 @@ response:
 
 
 
-> **PUT** ```/table/:id``` <br>
+> **PUT** api.php```/table/:id``` <br>
 Update a row in the database <br>
 **Need to send the access_token in the Authorization header** <br>
 
@@ -123,7 +123,7 @@ response:
 
 
 
-> **POST** ```/table``` <br>
+> **POST** api.php```/table``` <br>
 Create a new row <br>
 **Need to send the access_token in the Authorization header** <br>
 
@@ -141,7 +141,7 @@ response:
 ```
 
 
-> **DELETE** ```/table/:id``` <br>
+> **DELETE** api.php```/table/:id``` <br>
 Create a new row <br>
 **Need to send the access_token in the Authorization header** <br>
 
@@ -156,20 +156,20 @@ response:
 
 #### hasOne
 
-> **GET** ```/table/:id/relatedTable``` <br>
+> **GET** api.php```/table/:id/relatedTable``` <br>
 Delete <br>
 
 - Make a **GET** request to the table;
 - Get the relatedTable_id from the body;
 - Make a **GET** request to the relatedTeble with the obtained id.
 
-> **PUT** ```/table/:id/relatedTable``` <br>
+> **PUT** api.php```/table/:id/relatedTable``` <br>
 Create a new relation <br>
 **Need to send the access_token in the Authorization header** <br>
 
 - Just update the relatedTable_id field with the related element's id.
 
-> **DELETE** ```/table/:id/relatedTable``` <br>
+> **DELETE** api.php```/table/:id/relatedTable``` <br>
 Create a new row <br>
 **Need to send the access_token in the Authorization header** <br>
 
@@ -177,7 +177,7 @@ Create a new row <br>
 
 #### hasMany
 
-> **GET** ```/table/:id/relatedTable``` <br>
+> **GET** api.php```/table/:id/relatedTable``` <br>
 Get the realted elements of a determinate table <br>
 **Need to send the access_token in the Authorization header** <br>
 
@@ -196,7 +196,7 @@ response:
 ```
 
 
-> **POST** ```/table/:id/relatedTable``` <br>
+> **POST** api.php```/table/:id/relatedTable``` <br>
 Relate an existent element to the table <br>
 **Need to send the access_token in the Authorization header** <br>
 
@@ -214,7 +214,7 @@ response:
 ```
 
 
-> **DELETE** ```/table/:id/relatedTable/:relatedId``` <br>
+> **DELETE** api.php```/table/:id/relatedTable/:relatedId``` <br>
 Delete a relation between two elements <br>
 **Need to send the access_token in the Authorization header** <br>
 
