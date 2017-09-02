@@ -11,11 +11,11 @@ It have an authentication module.
 
 # Table Of Contents
 - [Install](#install)
-- [Usage](#usage-&-api)
+- [Usage](#usage--api)
 	- [user](#user)
 	- [other tables](#other-tables)
-        - [no relations](#hasOne)
-        - [relations](#hasMany)
+        - [no relations](#hasone)
+        - [relations](#hasmany)
 
 # Install
 
@@ -79,7 +79,7 @@ response:
 Get all the rows <br>
 
 response:
-```
+```json
 [
   { 
     //row_one
@@ -96,9 +96,9 @@ response:
 Find row by ID <br>
 
 response:
-```
-{ 
-  //all table's fields
+```json
+{
+    //all table's fields
 }
 ```
 
@@ -109,13 +109,13 @@ Update a row in the database <br>
 **Need to send the access_token in the Authorization header** <br>
 
 request: 
-```
+```json
 { 
     //row's fields i want to update
 }
 ```
 response:
-```
+```json
 { 
     //updated row
 }
@@ -128,7 +128,7 @@ Create a new row <br>
 **Need to send the access_token in the Authorization header** <br>
 
 request: 
-```
+```json
 { 
     //table's field without id and update_date
 }
@@ -182,7 +182,7 @@ Get the realted elements of a determinate table <br>
 **Need to send the access_token in the Authorization header** <br>
 
 response:
-```
+```json
 { 
     [
       { 
@@ -201,9 +201,9 @@ Relate an existent element to the table <br>
 **Need to send the access_token in the Authorization header** <br>
 
 request: 
-```
+```json
 { 
- 	// an existent element to relate
+    // an existent element to relate
 }
 ```
 response:
