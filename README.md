@@ -11,21 +11,29 @@ It have an authentication module.
 
 # Table Of Contents
 - [Install](#install)
+- [Configure the models](#configure-the-models)
 - [Usage](#usage--api)
 	- [user](#user)
 	- [other tables](#other-tables)
         - [no relations](#hasone)
         - [relations](#hasmany)
+- [WIP](#wip)
 
 # Install
 
-Save the file *api.php* and */core* folder in your server document root and configure the `config.php` file.
+- Save the file *api.php* and */core* folder in your server document root
+ 
+- configure the `config.php` file with the requested parameters
 
-Once you have configured the `config.php` file with the right parameters, launch `install.php`.
+- Configure the database's models in `models.json`
+    - the main use it will be automatically created with *admin* as username andpassword 
 
-Just launch it from the browser.
+- launch `install.php` from the browser
 
-Check if there is any errors while the installation.
+- Check if there is any errors while the installation
+
+# Configure the models
+There is a models already written by me in the project folder.
 
 # Usage & API
 The usage is realy simple:
@@ -117,7 +125,7 @@ request:
 response:
 ```json
 { 
-    //updated row
+    "count": "# of the rows affected"
 }
 ```
 
@@ -136,7 +144,7 @@ request:
 response:
 ```json
 { 
-    //added row
+    "count": "# of the rows affected"
 }
 ```
 
@@ -148,7 +156,7 @@ Create a new row <br>
 response:
 ```json
 { 
-    //numbers of deleted row
+    "count": "# of the rows affected"
 }
 ```
 
@@ -209,7 +217,7 @@ request:
 response:
 ```json
 { 
-    //added row
+    "count": "# of the rows affected"
 }
 ```
 
@@ -221,6 +229,20 @@ Delete a relation between two elements <br>
 response:
 ```json
 { 
-    //numbers of deleted row
+    "count": "# of the rows affected"
 }
 ```
+
+# WIP
+
+- **User**
+    - [ ] User permission
+    - [ ] Custom user
+- **Files**
+    - [ ] Files support
+- **Models**
+    - [ ] At State of Art you can't delete models or update it after. I want to make that
+    possible.
+    - [ ] Better configuration of the models. (I.E.: Required/Not Required fields)
+- **Example**
+    - [ ] Write a complete example.
