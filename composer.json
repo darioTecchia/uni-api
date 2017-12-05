@@ -1,1 +1,13 @@
-{}
+{
+  "name": "Uni API",
+  "description": "This PHP script allow you to create a simple and universal REST API. Based on the original idea of Maurits van der Schee, https://www.leaseweb.com/labs/2015/10/creating-a-simple-rest-api-in-php/",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Dario Tecchia",
+      "email": "dariotecchia@gmail.com",
+      "homepage": "http://www.dariotecchia.github.io",
+      "role": "Developer"
+    }
+  ]
+}

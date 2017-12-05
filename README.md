@@ -238,6 +238,7 @@ response:
 - **User**
     - [ ] User permission
     - [ ] Custom user
+    - [ ] Better Multi User support
 - **Files**
     - [ ] Files support
 - **Models**
