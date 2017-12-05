@@ -26,7 +26,7 @@ It have an authentication module.
 - configure the `config.php` file with the requested parameters
 
 - Configure the database's models in `models.json`
-    - the main use it will be automatically created with *admin* as username andpassword 
+    - the main use it will be automatically created with *admin* as username and password 
 
 - launch `install.php` from the browser
 
